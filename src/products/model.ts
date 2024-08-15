@@ -2,11 +2,6 @@ import mongoose from "mongoose";
 // (fields: name, description, price,
 // stock; all required, max length 50).
 const productSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   name: {
     type: String,
     required: true,

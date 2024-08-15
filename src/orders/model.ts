@@ -1,11 +1,6 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   customerID: {
     type: String,
     required: true,

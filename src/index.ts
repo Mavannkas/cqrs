@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import productsRoutes from "./products/routes";
 import ordersRoutes from "./orders/routes";
 import eventBus from "./middlewares/eventBus";
+import { HttpException } from "./exceptions/httpException";
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI || "";
@@ -23,6 +24,14 @@ app.use("/orders", ordersRoutes);
 // Fall back to 404
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404).json({ error: "Not found" });
+});
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof HttpException) {
+    return res.status(err.code).json({ error: err.message });
+  }
+  console.error(err);
+  res.status(500).json({ error: "Internal server error" });
 });
 
 app.listen(PORT, () => {

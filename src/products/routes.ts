@@ -9,7 +9,7 @@ const router = Router();
 
 router.get("/", validateRequest(listSchema), listHandler);
 router.post("/", validateRequest(createSchema), createHandler);
-router.get("/:id/restock", validateRequest(restockSchema), restockHandler);
-router.put("/:id/sell", validateRequest(sellSchema), sellHandler);
+router.post("/:id/restock", validateRequest(restockSchema), restockHandler);
+router.post("/:id/sell", validateRequest(sellSchema), sellHandler);
 
 export default router;
