@@ -1,6 +1,15 @@
-export const supportedCommands: Record<string, Function> = {
-  createProduct: ()=>{},
-  restockProduct: ()=>{},
-  sellProduct: ()=>{},
-  order: ()=>{},
+export type SupportedCommands =
+  | "createProduct"
+  | "restockProduct"
+  | "sellProduct"
+  | "order";
+
+export const supportedCommands: Record<
+  SupportedCommands,
+  (data: unknown) => void
+> = {
+  createProduct: () => {},
+  restockProduct: () => {},
+  sellProduct: () => {},
+  order: () => {},
 };

@@ -1,6 +1,6 @@
 import { EventEmitter } from "stream";
 import { UnsupportedCommandException } from "../../exceptions/unsupportedCommandException";
-import { supportedCommands } from "./commandActions";
+import { SupportedCommands, supportedCommands } from "./commandActions";
 
 declare global {
   namespace Express {
@@ -11,10 +11,9 @@ declare global {
 }
 
 export interface Command<T> {
-  type: string;
+  type: SupportedCommands;
   data: T;
 }
-
 class EventBus extends EventEmitter {
   send(command: Command<unknown>) {
     this.emit("command", command);
