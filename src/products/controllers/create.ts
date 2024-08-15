@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Joi from 'joi';
+import { createProductCommand } from "../commands/create";
 
 export const createSchema = Joi.object({
 })

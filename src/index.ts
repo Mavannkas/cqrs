@@ -3,6 +3,7 @@ import { json } from "body-parser";
 import mongoose from "mongoose";
 import productsRoutes from "./products/routes";
 import ordersRoutes from "./orders/routes";
+import eventBus from "./middlewares/eventBus";
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI || "";
@@ -11,6 +12,10 @@ const app = express();
 
 app.use(json());
 mongoose.connect(MONGO_URI);
+app.use((req: Request, res: Response, next: NextFunction) => {
+  req.eventBus = eventBus;
+  next();
+});
 
 app.use("/products", productsRoutes);
 app.use("/orders", ordersRoutes);

@@ -1,23 +1,39 @@
 import { EventEmitter } from "stream";
 import { UnsupportedCommandException } from "../../exceptions/unsupportedCommandException";
+import { supportedCommands } from "./commandActions";
+
+declare global {
+  namespace Express {
+    interface Request {
+      eventBus: EventBus;
+    }
+  }
+}
 
 export interface Command<T> {
   type: string;
   data: T;
 }
 
-const eventEmitter = new EventEmitter();
+class EventBus extends EventEmitter {
+  send(command: Command<unknown>) {
+    this.emit("command", command);
+  }
+}
+
+const eventBus = new EventBus();
 
 function execute(command: Command<unknown>) {
   const { type, data } = command;
-  if (!supportedCommands.includes(type)) {
+
+  if (!supportedCommands[type]) {
+    console.error("Supported commands:", supportedCommands);
     throw new UnsupportedCommandException("Command not supported");
   }
 
   supportedCommands[type](data);
 }
 
-eventEmitter.on("command", execute);
+eventBus.on("command", execute);
 
-// Add this to express request as middleware
-export default eventEmitter;
+export default eventBus;

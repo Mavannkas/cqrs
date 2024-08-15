@@ -1,6 +1,6 @@
-const supportedCommands: Record<string, Function> = {
-  createProduct: Function,
-  restockProduct: Function,
-  sellProduct: Function,
-  order: Function,
+export const supportedCommands: Record<string, Function> = {
+  createProduct: ()=>{},
+  restockProduct: ()=>{},
+  sellProduct: ()=>{},
+  order: ()=>{},
 };
