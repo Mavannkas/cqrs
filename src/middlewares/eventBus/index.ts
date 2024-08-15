@@ -1,6 +1,10 @@
 import { EventEmitter } from "stream";
 import { UnsupportedCommandException } from "../../exceptions/unsupportedCommandException";
-import { SupportedCommands, supportedCommands } from "./commandActions";
+import {
+  CommandData,
+  SupportedCommands,
+  supportedCommands,
+} from "./commandActions";
 
 declare global {
   namespace Express {
@@ -15,7 +19,7 @@ export interface Command<T> {
   data: T;
 }
 class EventBus extends EventEmitter {
-  send(command: Command<unknown>) {
+  send(command: Command<CommandData>) {
     this.emit("command", command);
   }
 }
@@ -25,7 +29,7 @@ const eventBus = new EventBus();
 function execute(command: Command<unknown>) {
   const { type, data } = command;
 
-  if (!supportedCommands[type]) {
+  if (typeof supportedCommands[type] !== "function") {
     console.error("Supported commands:", supportedCommands);
     throw new UnsupportedCommandException("Command not supported");
   }

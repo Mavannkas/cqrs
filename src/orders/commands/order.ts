@@ -1,6 +1,7 @@
 import { Command } from "../../middlewares/eventBus";
+import { CommandData } from "../../middlewares/eventBus/commandActions";
 
-export interface OrderCommandData {
+export interface OrderCommandData extends CommandData {
     customerId: string;
     products: {
         productId: string;
