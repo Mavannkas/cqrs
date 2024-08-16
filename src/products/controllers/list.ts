@@ -13,10 +13,8 @@ export async function listHandler(
   next: NextFunction
 ) {
   try {
-    const result = await Product.find({
-      limit: req.query.limit,
-      offset: req.query.offset,
-    });
+    const { limit, offset } = req.query as unknown as Record<string, number>;
+    const result = await Product.find().limit(limit).skip(offset);
 
     res.json(result);
   } catch (err) {

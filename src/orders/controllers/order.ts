@@ -8,23 +8,44 @@ import { Product } from "../../products/model";
 export const orderSchema = Joi.object({
   customerId: Joi.string()
     .required()
-    .custom((value) => {
-      return isValidObjectId(value);
-    }, "valid object id"),
+    .custom((value, helper) => {
+      return isValidObjectId(value)
+        ? value
+        : helper.message({ custom: `Customer id "${value}" is not valid` });
+    }),
   products: Joi.array()
     .items(
       Joi.object({
         productId: Joi.string()
           .required()
-          .custom((value) => {
-            return isValidObjectId(value);
-          }, "valid object id"),
+          .custom((value, helper) => {
+            return isValidObjectId(value)
+              ? value
+              : helper.message({
+                  custom: `Product id "${value}" is not valid`,
+                });
+          }),
         quantity: Joi.number().required().min(1),
       })
     )
     .required()
+    .unique((a, b) => a.productId === b.productId, {})
+    .message("Duplicate product ids are not allowed")
     .min(1),
 });
+
+async function validateProductOrders(input: OrderCommandData) {
+  for (const productData of input.products) {
+    console.log(productData);
+    const product = await Product.findById(productData.productId);
+
+    if ((product?.stock ?? 0) < productData.quantity) {
+      throw new BadRequestException(
+        `Not enough stock for product with id ${productData.productId}`
+      );
+    }
+  }
+}
 
 export async function orderHandler(
   req: Request,
@@ -37,14 +58,7 @@ export async function orderHandler(
       products: req.body.products,
     };
 
-    for (const productData of input.products) {
-      const product = await Product.findById(productData.productId);
-      if (product?.stock ?? 0 < productData.quantity) {
-        throw new BadRequestException(
-          `Not enough stock for product with id ${productData.productId}`
-        );
-      }
-    }
+    await validateProductOrders(input);
     req.eventBus.send(createOrderCommand(input));
 
     res.status(202).json({ message: "Order creation was initiated" });

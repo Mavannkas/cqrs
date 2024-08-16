@@ -8,6 +8,7 @@ import {
   createSellProductCommand,
   SellProductCommandData,
 } from "../commands/sell";
+import { tryToGetProductById } from "../utils";
 
 export const sellSchema = Joi.object({
   amount: Joi.number().min(0).required(),
@@ -20,14 +21,8 @@ export async function sellHandler(
 ) {
   try {
     const { id } = req.params;
-    if (!isValidObjectId(id)) {
-      throw new BadRequestException("Invalid product id");
-    }
-    const product = await Product.findById(id);
 
-    if (!product) {
-      throw new NotFoundException("Product not found");
-    }
+    await tryToGetProductById(id);
 
     const input: SellProductCommandData = {
       productId: id,
@@ -41,3 +36,4 @@ export async function sellHandler(
     next(err);
   }
 }
+

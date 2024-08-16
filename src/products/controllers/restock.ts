@@ -2,13 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import { Product } from "../model";
 import { NotFoundException } from "../../exceptions/notFoundException";
-import { object } from "joi";
 import { isValidObjectId } from "mongoose";
 import { BadRequestException } from "../../exceptions/badRequestException";
 import {
   createRestockProductCommand,
   RestockProductCommandData,
 } from "../commands/restock";
+import { tryToGetProductById } from "../utils";
 
 export const restockSchema = Joi.object({
   amount: Joi.number().min(0).required(),
@@ -21,14 +21,8 @@ export async function restockHandler(
 ) {
   try {
     const { id } = req.params;
-    if (!isValidObjectId(id)) {
-      throw new BadRequestException("Invalid product id");
-    }
-    const product = await Product.findById(id);
-
-    if (!product) {
-      throw new NotFoundException("Product not found");
-    }
+    
+    await tryToGetProductById(id);
 
     const input: RestockProductCommandData = {
       productId: id,
