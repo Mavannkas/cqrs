@@ -1,5 +1,5 @@
 import { EventEmitter } from "stream";
-import { UnsupportedCommandException } from "../../exceptions/unsupportedCommandException";
+import { UnsupportedCommandException } from "../../exceptions";
 import {
   CommandData,
   SupportedCommands,

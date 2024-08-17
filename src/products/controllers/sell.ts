@@ -1,13 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { isValidObjectId } from "mongoose";
-import { BadRequestException } from "../../exceptions/badRequestException";
-import { NotFoundException } from "../../exceptions/notFoundException";
-import { Product } from "../model";
-import {
-  createSellProductCommand,
-  SellProductCommandData,
-} from "../commands/sell";
+import { createSellProductCommand, SellProductCommandData } from "../commands";
 import { tryToGetProductById } from "../utils";
 
 export const sellSchema = Joi.object({
@@ -36,4 +29,3 @@ export async function sellHandler(
     next(err);
   }
 }
-

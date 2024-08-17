@@ -1,9 +1,16 @@
 import { Router } from "express";
-import { listHandler, listSchema } from "./controllers/list";
-import { createHandler, createSchema } from "./controllers/create";
-import { restockHandler, restockSchema } from "./controllers/restock";
-import { sellHandler, sellSchema } from "./controllers/sell";
+
 import { validateRequest } from "../middlewares/joi";
+import {
+  createHandler,
+  createSchema,
+  listHandler,
+  listSchema,
+  restockHandler,
+  restockSchema,
+  sellHandler,
+  sellSchema,
+} from "./controllers";
 
 const router = Router();
 

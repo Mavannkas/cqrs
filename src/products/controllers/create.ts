@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { createProductCommand, ProductCommandData } from "../commands/create";
+import { createProductCommand, ProductCommandData } from "../commands";
 
 export const createSchema = Joi.object({
   name: Joi.string().max(50).required(),

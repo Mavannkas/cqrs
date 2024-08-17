@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import { isValidObjectId } from "mongoose";
-import { BadRequestException } from "../../exceptions/badRequestException";
-import { createOrderCommand, OrderCommandData } from "../commands/order";
+import { BadRequestException } from "../../exceptions";
+import { createOrderCommand, OrderCommandData } from "../commands";
 import { Product } from "../../products/model";
 
 export const orderSchema = Joi.object({

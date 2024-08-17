@@ -1,13 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { Product } from "../model";
-import { NotFoundException } from "../../exceptions/notFoundException";
-import { isValidObjectId } from "mongoose";
-import { BadRequestException } from "../../exceptions/badRequestException";
 import {
   createRestockProductCommand,
   RestockProductCommandData,
-} from "../commands/restock";
+} from "../commands";
 import { tryToGetProductById } from "../utils";
 
 export const restockSchema = Joi.object({
@@ -21,7 +17,7 @@ export async function restockHandler(
 ) {
   try {
     const { id } = req.params;
-    
+
     await tryToGetProductById(id);
 
     const input: RestockProductCommandData = {

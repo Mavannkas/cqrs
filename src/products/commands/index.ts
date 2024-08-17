@@ -1,9 +1,4 @@
-import { createProductCommand } from "./create";
-import { createRestockProductCommand } from "./restock";
-import { createSellProductCommand } from "./sell";
-
-export default {
-  createProductCommand,
-  createSellProductCommand,
-  createRestockProductCommand,
-};
+export * from "./create";
+export * from "./restock";
+export * from "./sell";
+export * from "./implementations";

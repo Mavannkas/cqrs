@@ -1,7 +1,9 @@
-import { orderImplementation } from "../../orders/commands/implementations/order";
-import { createProductImplementation } from "../../products/commands/implementations/create";
-import { restockProductImplementation } from "../../products/commands/implementations/restock";
-import { sellProductImplementation } from "../../products/commands/implementations/sell";
+import { orderImplementation } from "../../orders/commands";
+import {
+  createProductImplementation,
+  restockProductImplementation,
+  sellProductImplementation,
+} from "../../products/commands";
 
 export interface CommandData {}
 export type SupportedCommands =

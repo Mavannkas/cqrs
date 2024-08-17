@@ -1,5 +1,5 @@
 import { Product } from "../../model";
-import { ProductCommandData } from "../create";
+import { ProductCommandData } from "..";
 
 export async function createProductImplementation(data: ProductCommandData) {
   try {

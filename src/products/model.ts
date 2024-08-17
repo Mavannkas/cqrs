@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-// (fields: name, description, price,
-// stock; all required, max length 50).
+
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -20,7 +19,6 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-
 });
 
 export const Product = mongoose.model("Product", productSchema);

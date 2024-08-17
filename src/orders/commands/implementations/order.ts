@@ -1,6 +1,6 @@
 import { Product } from "../../../products/model";
 import { Order } from "../../model";
-import { OrderCommandData } from "../order";
+import { OrderCommandData } from "..";
 
 async function getProducts({ products }: OrderCommandData) {
   return Product.find({

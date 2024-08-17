@@ -1,5 +1,5 @@
 import { Product } from "../../model";
-import { RestockProductCommandData } from "../restock";
+import { RestockProductCommandData } from "..";
 
 export async function restockProductImplementation(
   data: RestockProductCommandData
