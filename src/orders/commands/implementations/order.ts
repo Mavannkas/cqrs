@@ -1,6 +1,6 @@
 import { Product } from "../../../products/model";
 import { Order } from "../../model";
-import { OrderCommandData } from "..";
+import { OrderCommandData, ProductData } from "..";
 import { BadRequestException, NotFoundException } from "../../../exceptions";
 import { log } from "../../../middlewares/pino";
 
@@ -10,8 +10,11 @@ async function getProducts({ products }: OrderCommandData) {
   });
 }
 
-const getProductById = ({ products }: OrderCommandData, id: string) => {
-  return products.find((product) => product.productId === id);
+const getProductById = (
+  { products }: OrderCommandData,
+  id: string
+): ProductData => {
+  return products.find((product) => product.productId === id) as ProductData;
 };
 
 export async function orderImplementation(data: OrderCommandData) {
@@ -36,7 +39,7 @@ export async function orderImplementation(data: OrderCommandData) {
 
     for (const product of products) {
       const productData = getProductById(data, product._id.toString());
-      product.stock -= productData!.quantity;
+      product.stock -= productData.quantity;
       await product.save();
     }
 

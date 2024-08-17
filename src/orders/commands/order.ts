@@ -1,12 +1,13 @@
 import { Command } from "../../middlewares/eventBus";
 import { CommandData } from "../../middlewares/eventBus/commandActions";
 
+export interface ProductData {
+  productId: string;
+  quantity: number;
+}
 export interface OrderCommandData extends CommandData {
   customerId: string;
-  products: {
-    productId: string;
-    quantity: number;
-  }[];
+  products: ProductData[];
 }
 
 export function createOrderCommand(
