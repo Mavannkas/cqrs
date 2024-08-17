@@ -1,6 +1,7 @@
 import { Product } from "../../../products/model";
 import { Order } from "../../model";
 import { OrderCommandData } from "..";
+import { BadRequestException, NotFoundException } from "../../../exceptions";
 
 async function getProducts({ products }: OrderCommandData) {
   return Product.find({
@@ -21,12 +22,14 @@ export async function orderImplementation(data: OrderCommandData) {
     for (const product of products) {
       const productData = getProductById(data, product._id.toString());
       if (!productData) {
-        throw new Error(
+        throw new NotFoundException(
           `Product data not found for product ID: ${product._id}`
         );
       }
       if (product.stock < productData.quantity) {
-        throw new Error(`Not enough stock for product ID: ${product._id}`);
+        throw new BadRequestException(
+          `Not enough stock for product ID: ${product._id}`
+        );
       }
     }
 

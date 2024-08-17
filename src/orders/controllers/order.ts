@@ -5,6 +5,9 @@ import { BadRequestException } from "../../exceptions";
 import { createOrderCommand, OrderCommandData } from "../commands";
 import { Product } from "../../products/model";
 
+const MIN_QUANTITY = 1;
+const MIN_PRODUCTS = 1;
+
 export const orderSchema = Joi.object({
   customerId: Joi.string()
     .required()
@@ -25,18 +28,17 @@ export const orderSchema = Joi.object({
                   custom: `Product id "${value}" is not valid`,
                 });
           }),
-        quantity: Joi.number().required().min(1),
+        quantity: Joi.number().required().min(MIN_QUANTITY),
       })
     )
     .required()
     .unique((a, b) => a.productId === b.productId, {})
     .message("Duplicate product ids are not allowed")
-    .min(1),
+    .min(MIN_PRODUCTS),
 });
 
 async function validateProductOrders(input: OrderCommandData) {
   for (const productData of input.products) {
-    console.log(productData);
     const product = await Product.findById(productData.productId);
 
     if ((product?.stock ?? 0) < productData.quantity) {

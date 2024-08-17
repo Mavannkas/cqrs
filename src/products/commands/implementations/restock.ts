@@ -1,5 +1,6 @@
 import { Product } from "../../model";
 import { RestockProductCommandData } from "..";
+import { NotFoundException } from "../../../exceptions";
 
 export async function restockProductImplementation(
   data: RestockProductCommandData
@@ -9,7 +10,9 @@ export async function restockProductImplementation(
 
     const product = await Product.findById(data.productId);
     if (!product) {
-      throw new Error("Product not found");
+      throw new NotFoundException(
+        `Product not found with id ${data.productId}`
+      );
     }
 
     product.stock += data.amount;

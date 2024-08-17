@@ -3,8 +3,10 @@ import Joi from "joi";
 import { createSellProductCommand, SellProductCommandData } from "../commands";
 import { tryToGetProductById } from "../utils";
 
+const MIN_AMOUNT = 0;
+
 export const sellSchema = Joi.object({
-  amount: Joi.number().min(0).required(),
+  amount: Joi.number().min(MIN_AMOUNT).required(),
 });
 
 export async function sellHandler(

@@ -2,9 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import { Product } from "../model";
 
+const MIN_LIMIT = 1;
+const MIN_OFFSET = 0;
+const DEFAULT_LIMIT = 10;
+const DEFAULT_OFFSET = 0;
+
 export const listSchema = Joi.object({
-  limit: Joi.number().min(1).default(10),
-  offset: Joi.number().min(0).default(0),
+  limit: Joi.number().min(MIN_LIMIT).default(DEFAULT_LIMIT),
+  offset: Joi.number().min(MIN_OFFSET).default(DEFAULT_OFFSET),
 });
 
 export async function listHandler(

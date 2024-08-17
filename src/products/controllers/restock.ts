@@ -6,8 +6,10 @@ import {
 } from "../commands";
 import { tryToGetProductById } from "../utils";
 
+const MIN_AMOUNT = 0;
+
 export const restockSchema = Joi.object({
-  amount: Joi.number().min(0).required(),
+  amount: Joi.number().min(MIN_AMOUNT).required(),
 });
 
 export async function restockHandler(

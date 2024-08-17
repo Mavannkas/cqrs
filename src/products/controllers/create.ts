@@ -2,11 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import { createProductCommand, ProductCommandData } from "../commands";
 
+const MIN_PRICE = 0;
+const MIN_STOCK = 0;
+const MAX_LENGTH = 50;
+
 export const createSchema = Joi.object({
-  name: Joi.string().max(50).required(),
-  description: Joi.string().max(50).required(),
-  price: Joi.number().min(0).required(),
-  stock: Joi.number().min(0).required(),
+  name: Joi.string().max(MAX_LENGTH).required(),
+  description: Joi.string().max(MAX_LENGTH).required(),
+  price: Joi.number().min(MIN_PRICE).required(),
+  stock: Joi.number().min(MIN_STOCK).required(),
 });
 
 export async function createHandler(
