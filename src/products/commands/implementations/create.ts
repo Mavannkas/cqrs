@@ -1,10 +1,11 @@
 import { Product } from "../../model";
 import { ProductCommandData } from "..";
+import { log } from "../../../middlewares/pino";
 
 export async function createProductImplementation(data: ProductCommandData) {
   try {
-    console.log("createProductImplementation", data);
-
+    log.info(data, "createProductImplementation");
+    
     const product = new Product({
       name: data.name,
       description: data.description,
@@ -14,6 +15,6 @@ export async function createProductImplementation(data: ProductCommandData) {
 
     await product.save();
   } catch (err) {
-    console.error("createProductImplementation", err);
+    log.error(err, "createProductImplementationError");
   }
 }

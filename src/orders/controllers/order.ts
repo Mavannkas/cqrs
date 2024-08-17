@@ -1,33 +1,19 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
-import { isValidObjectId } from "mongoose";
 import { BadRequestException } from "../../exceptions";
 import { createOrderCommand, OrderCommandData } from "../commands";
 import { Product } from "../../products/model";
 
 const MIN_QUANTITY = 1;
 const MIN_PRODUCTS = 1;
+const MAX_ID_LENGTH = 24;
 
 export const orderSchema = Joi.object({
-  customerId: Joi.string()
-    .required()
-    .custom((value, helper) => {
-      return isValidObjectId(value)
-        ? value
-        : helper.message({ custom: `Customer id "${value}" is not valid` });
-    }),
+  customerId: Joi.string().hex().length(MAX_ID_LENGTH).required(),
   products: Joi.array()
     .items(
       Joi.object({
-        productId: Joi.string()
-          .required()
-          .custom((value, helper) => {
-            return isValidObjectId(value)
-              ? value
-              : helper.message({
-                  custom: `Product id "${value}" is not valid`,
-                });
-          }),
+        productId: Joi.string().hex().length(MAX_ID_LENGTH).required(),
         quantity: Joi.number().required().min(MIN_QUANTITY),
       })
     )

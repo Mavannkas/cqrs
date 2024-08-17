@@ -2,6 +2,7 @@ import { Product } from "../../../products/model";
 import { Order } from "../../model";
 import { OrderCommandData } from "..";
 import { BadRequestException, NotFoundException } from "../../../exceptions";
+import { log } from "../../../middlewares/pino";
 
 async function getProducts({ products }: OrderCommandData) {
   return Product.find({
@@ -15,7 +16,7 @@ const getProductById = ({ products }: OrderCommandData, id: string) => {
 
 export async function orderImplementation(data: OrderCommandData) {
   try {
-    console.log("orderImplementation", data);
+    log.info(data, "orderImplementation");
 
     const products = await getProducts(data);
 
@@ -45,6 +46,6 @@ export async function orderImplementation(data: OrderCommandData) {
     });
     await order.save();
   } catch (err) {
-    console.error("orderImplementation", err);
+    log.error(err, "orderImplementationError");
   }
 }

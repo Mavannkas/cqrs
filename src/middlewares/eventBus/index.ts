@@ -5,6 +5,7 @@ import {
   SupportedCommands,
   supportedCommands,
 } from "./commandActions";
+import { log } from "../pino";
 
 declare global {
   namespace Express {
@@ -30,7 +31,7 @@ function execute(command: Command<unknown>) {
   const { type, data } = command;
 
   if (typeof supportedCommands[type] !== "function") {
-    console.error("Supported commands:", supportedCommands);
+    log.error("Supported commands:", supportedCommands);
     throw new UnsupportedCommandException("Command not supported");
   }
 

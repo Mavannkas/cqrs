@@ -1,10 +1,11 @@
 import { Product } from "../../model";
 import { SellProductCommandData } from "..";
 import { BadRequestException, NotFoundException } from "../../../exceptions";
+import { log } from "../../../middlewares/pino";
 
 export async function sellProductImplementation(data: SellProductCommandData) {
   try {
-    console.log("sellProductImplementation", data);
+    log.info(data, "sellProductImplementation");
     const product = await Product.findOne({ _id: data.productId });
     if (!product) {
       throw new NotFoundException(
@@ -22,6 +23,6 @@ export async function sellProductImplementation(data: SellProductCommandData) {
 
     await product.save();
   } catch (err) {
-    console.error(err);
+    log.error(err, "sellProductImplementationError");
   }
 }

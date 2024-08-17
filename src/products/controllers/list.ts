@@ -18,6 +18,7 @@ export async function listHandler(
   next: NextFunction
 ) {
   try {
+    // Casted because Joi changes the type of the query object
     const { limit, offset } = req.query as unknown as Record<string, number>;
     const result = await Product.find().limit(limit).skip(offset);
 

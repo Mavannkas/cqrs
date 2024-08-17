@@ -19,12 +19,13 @@ export async function restockHandler(
 ) {
   try {
     const { id } = req.params;
+    const { amount } = req.body;
 
     await tryToGetProductById(id);
 
     const input: RestockProductCommandData = {
+      amount,
       productId: id,
-      amount: req.body.amount,
     };
 
     req.eventBus.send(createRestockProductCommand(input));

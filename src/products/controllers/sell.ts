@@ -16,12 +16,13 @@ export async function sellHandler(
 ) {
   try {
     const { id } = req.params;
+    const { amount } = req.body;
 
     await tryToGetProductById(id);
 
     const input: SellProductCommandData = {
+      amount,
       productId: id,
-      amount: req.body.amount,
     };
 
     req.eventBus.send(createSellProductCommand(input));
